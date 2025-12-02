@@ -11,7 +11,10 @@ import {
   } from '@nestjs/common';
   import { BooksService } from './books.service';
   import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+  import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('Books')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Controller('books')
   export class BooksController {
@@ -23,6 +26,8 @@ import {
     }
   
     @Get()
+    @ApiQuery({ name: 'author_id', required: false })
+    @ApiQuery({ name: 'is_borrowed', required: false })
     findAll(
       @Query('author_id') author_id?: string,
       @Query('is_borrowed') is_borrowed?: string,

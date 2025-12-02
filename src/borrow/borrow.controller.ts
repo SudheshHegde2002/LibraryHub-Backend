@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post, Param, UseGuards } from '@nestjs/common';
 import { BorrowService } from './borrow.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Borrow')
 @UseGuards(JwtAuthGuard)
 @Controller('borrow')
 export class BorrowController {

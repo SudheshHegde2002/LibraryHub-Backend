@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-
+import { convertBigIntToString } from '../utils/bigint.util';
 @Injectable()
 export class BorrowService {
   constructor(private prisma: PrismaService) {}
@@ -23,7 +23,7 @@ export class BorrowService {
       data: { is_borrowed: true },
     });
 
-    return borrow;
+    return convertBigIntToString(borrow);
   }
 
   async returnBook(book_id: number) {
@@ -47,11 +47,11 @@ export class BorrowService {
       data: { is_borrowed: false },
     });
 
-    return { message: 'Book returned successfully' };
+    return convertBigIntToString({ message: 'Book returned successfully' });
   }
 
-  getUserBorrowedBooks(user_id: number) {
-    return this.prisma.borrows.findMany({
+  async getUserBorrowedBooks(user_id: number) {
+    const result = await this.prisma.borrows.findMany({
       where: {
         user_id,
         returned_at: null,
@@ -60,5 +60,6 @@ export class BorrowService {
         Books: true,
       },
     });
+    return convertBigIntToString(result);
   }
 }

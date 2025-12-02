@@ -10,7 +10,9 @@ import {
   } from '@nestjs/common';
   import { AuthorsService } from './authors.service';
   import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+  import { ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('Authors')
   @UseGuards(JwtAuthGuard)
   @Controller('authors')
   export class AuthorsController {
