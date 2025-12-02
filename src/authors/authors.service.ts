@@ -1,28 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { convertBigIntToString } from '../utils/bigint.util';
 
 @Injectable()
 export class AuthorsService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: { name: string }) {
-    return this.prisma.authors.create({ data });
+  async create(data: { name: string }) {
+    const result = await this.prisma.authors.create({ data });
+    return convertBigIntToString(result);
   }
 
-  findAll() {
-    return this.prisma.authors.findMany();
+  async findAll() {
+    const result = await this.prisma.authors.findMany();
+    return convertBigIntToString(result);
   }
 
-  update(id: number, data: { name?: string }) {
-    return this.prisma.authors.update({
+  async update(id: number, data: { name?: string }) {
+    const result = await this.prisma.authors.update({
       where: { id },
       data,
     });
+    return convertBigIntToString(result);
   }
 
-  delete(id: number) {
-    return this.prisma.authors.delete({
+  async delete(id: number) {
+    const result = await this.prisma.authors.delete({
       where: { id },
     });
+    return convertBigIntToString(result);
   }
 }
